@@ -7,12 +7,12 @@ stop on {{ consul_upstart_stop_on }}
 script
 {% if consul_dynamic_bind %}
   # Get the public IP
-  BIND=`ifconfig eth0 | grep "inet addr" | awk '{ print substr($2,6) }'`
+  BIND=`ifconfig {{ consul_bind_adapter }} | grep "inet addr" | awk '{ print substr($2,6) }'`
 {% endif %}
 
 {% if consul_client_address_bind %}
   # Get the public IP
-  CLIENT_BIND=`ifconfig eth0 | grep "inet addr" | awk '{ print substr($2,6) }'`
+  CLIENT_BIND=`ifconfig {{ consul_bind_adapter }} | grep "inet addr" | awk '{ print substr($2,6) }'`
 {% endif %}
 
   # Allow non-root to bind to privileged ports (if used)
