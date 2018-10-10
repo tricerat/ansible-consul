@@ -43,6 +43,7 @@ consul_dns_only_passing: false
 consul_recursors: []
 
 consul_upstart_template: "consul.conf.j2"
+consul_systemd_script: "consul.systemd.sh.j2"
 consul_systemd_template: "consul.systemd.j2"
 consul_initd_template: "consul.initd.sh.j2"
 consul_dnsmasq_upstream_template: "resolv_dnsmasq.conf.j2"

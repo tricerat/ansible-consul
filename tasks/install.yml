@@ -150,7 +150,16 @@
   notify:
     - "{{ consul_restart_handler }}"
 
-- name: copy consul systemd script
+- name: copy consul systemd startup script
+  template: >
+    src={{consul_systemd_script}}
+    dest={{ consul_home }}/consul.systemd.sh
+    owner=root
+    group=root
+    mode=0755
+  when: consul_use_systemd
+
+- name: copy consul systemd service unit definition
   template: >
     src={{consul_systemd_template}}
     dest=/etc/systemd/system/consul.service
@@ -202,9 +211,9 @@
 - name: add CONSUL_RPC_ADDR to .bashrc
   lineinfile: >
     dest={{ consul_home }}/.bashrc
-    insertbefore=BOF 
-    regexp='^export CONSUL_RPC_ADDR' 
-    line='export CONSUL_RPC_ADDR="{{ consul_client_address }}:{{ consul_port_rpc }}"' 
+    insertbefore=BOF
+    regexp='^export CONSUL_RPC_ADDR'
+    line='export CONSUL_RPC_ADDR="{{ consul_client_address }}:{{ consul_port_rpc }}"'
     create=yes
     owner={{consul_user}}
     group={{consul_group}}
