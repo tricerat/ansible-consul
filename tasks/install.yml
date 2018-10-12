@@ -208,12 +208,12 @@
   notify:
     - "{{ consul_restart_handler }}"
 
-- name: add CONSUL_RPC_ADDR to .bashrc
-  lineinfile: >
-    dest={{ consul_home }}/.bashrc
-    insertbefore=BOF
-    regexp='^export CONSUL_RPC_ADDR'
-    line='export CONSUL_RPC_ADDR="{{ consul_client_address }}:{{ consul_port_rpc }}"'
-    create=yes
-    owner={{consul_user}}
-    group={{consul_group}}
+# - name: add CONSUL_RPC_ADDR to .bashrc
+#   lineinfile: >
+#     dest={{ consul_home }}/.bashrc
+#     insertbefore=BOF
+#     regexp='^export CONSUL_RPC_ADDR'
+#     line='export CONSUL_RPC_ADDR="{{ consul_client_address }}:{{ consul_port_rpc }}"'
+#     create=yes
+#     owner={{consul_user}}
+#     group={{consul_group}}
