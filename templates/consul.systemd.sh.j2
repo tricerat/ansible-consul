@@ -2,12 +2,12 @@
 
 {% if consul_dynamic_bind %}
   # Get the public IP
-  BIND=`ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1`
+  BIND=`ip addr show {{ consul_bind_adapter }} | grep "inet\b" | awk '{print $2}' | cut -d/ -f1`
 {% endif %}
 
 {% if consul_client_address_bind %}
   # Get the public IP
-  CLIENT_BIND=`ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1`
+  CLIENT_BIND=`ip addr show {{ consul_bind_adapter }} | grep "inet\b" | awk '{print $2}' | cut -d/ -f1`
 {% endif %}
 
   # Allow non-root to bind to privileged ports (if used)
