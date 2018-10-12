@@ -1,26 +1,27 @@
 #!/bin/sh
+/sbin/ip addr show {{ consul_bind_adapter }} | grep "inet\b" | awk '{print $2}' | cut -d/ -f1 | tee {{ consul_home }}/bindip.txt
 
-{% if consul_dynamic_bind %}
-  # Get the public IP
-  BIND=`ip addr show {{ consul_bind_adapter }} | grep "inet\b" | awk '{print $2}' | cut -d/ -f1`
-{% endif %}
+# {% if consul_dynamic_bind %}
+#   # Get the public IP
+#   BIND=`ip addr show {{ consul_bind_adapter }} | grep "inet\b" | awk '{print $2}' | cut -d/ -f1`
+# {% endif %}
 
-{% if consul_client_address_bind %}
-  # Get the public IP
-  CLIENT_BIND=`ip addr show {{ consul_bind_adapter }} | grep "inet\b" | awk '{print $2}' | cut -d/ -f1`
-{% endif %}
+# {% if consul_client_address_bind %}
+#   # Get the public IP
+#   CLIENT_BIND=`ip addr show {{ consul_bind_adapter }} | grep "inet\b" | awk '{print $2}' | cut -d/ -f1`
+# {% endif %}
 
-  # Allow non-root to bind to privileged ports (if used)
-  setcap CAP_NET_BIND_SERVICE=+eip {{ consul_home }}/bin/consul
+#   # Allow non-root to bind to privileged ports (if used)
+#   setcap CAP_NET_BIND_SERVICE=+eip {{ consul_home }}/bin/consul
 
-  # Set GOMAXPROCS to use all our CPUs, because Consul can block a scheduler thread
-  # Use su to become consul user non-interactively on old Upstart versions (see http://superuser.com/a/234541/76168)
-  exec su -s /bin/sh -c 'GOMAXPROCS=`nproc` exec "$0" "$@" 1>> {{ consul_log_file }} &2>1' consul -- /opt/consul/bin/consul agent \
-{% if consul_dynamic_bind %}
-    -bind=$BIND \
-{% endif %}
-{% if consul_client_address_bind %}
-    -client=$CLIENT_BIND \
-{% endif %}
-    -config-dir={{ consul_config_dir }} \
-    -config-file={{ consul_config_file }}
+#   # Set GOMAXPROCS to use all our CPUs, because Consul can block a scheduler thread
+#   # Use su to become consul user non-interactively on old Upstart versions (see http://superuser.com/a/234541/76168)
+#   exec su -s /bin/sh -c 'GOMAXPROCS=`nproc` exec "$0" "$@" 1>> {{ consul_log_file }} &2>1' consul -- /opt/consul/bin/consul agent \
+# {% if consul_dynamic_bind %}
+#     -bind=$BIND \
+# {% endif %}
+# {% if consul_client_address_bind %}
+#     -client=$CLIENT_BIND \
+# {% endif %}
+#     -config-dir={{ consul_config_dir }} \
+#     -config-file={{ consul_config_file }}
